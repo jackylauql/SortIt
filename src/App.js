@@ -3,19 +3,24 @@ import DataContainer from './components/DataContainer';
 import NavigationBar from './components/NavigationBar';
 
 function App() {
+  // Initialization Variables
+  const [sortedColor, sortingColor, unsortedColor] = ['#1509eb', '#e01f1f', '#18baf0']
+
   const generateRandomData = (amountOfData) => {
     const dataArray = []
     for (let i = 0; i < amountOfData; i++) {
-        const randomValue = Math.floor(Math.random() * 500)
+        const randomValue = Math.floor(Math.random() * 600)
         dataArray.push({
           value: randomValue,
           position: i,
-          width: 800/(amountOfData) - 1
+          width: 1200/(amountOfData) - 1,
+          color: unsortedColor
         })
     }
     return dataArray
   }
 
+  // All States
   const [dataArray, setDataArray] = useState(generateRandomData(100))
   const [animationSpeed, setAnimationSpeed] = useState(1)
   const [sorting, setSorting] = useState(false)
@@ -34,20 +39,20 @@ function App() {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve()
-        }, 20 / animationSpeed)
+        }, 40 / animationSpeed)
       })
     },
 
+    // Sorting Functions
     bubbleSort: async (currentPass) => {      
       let changes = false
       setSorting(true)
       const newData = dataArray
       
-      for (let i=0; i<newData.length-currentPass; i++) {
-        newData[i].active = true
-        newData[i+1].active = true
+      for (let i = 0; i < newData.length - currentPass; i++) {
+        newData[i].color = sortingColor
+        newData[i+1].color = sortingColor
         await buttonFunctions.animation(animationSpeed)
-        console.log(animationSpeed)
         if (newData[i].value > newData[i+1].value) {
             const lower_value = newData[i+1]
             newData[i+1] = newData[i]
@@ -55,9 +60,10 @@ function App() {
             changes = true
         }
         setDataArray([...newData]) // a new instance is mapped so the component rerenders
-        newData[i].active = false
-        newData[i+1].active = false
+        newData[i].color = unsortedColor
+        newData[i+1].color = unsortedColor
       }
+      newData[newData.length - currentPass].color = sortedColor
       
       if (!changes) {
         setSorting(false)
@@ -71,7 +77,7 @@ function App() {
     <div className="container" style={{
       display: 'grid', placeItems: 'center'
     }}>
-      <NavigationBar sorting={sorting} buttonFunctions={buttonFunctions}/>
+      <NavigationBar sorting={sorting} buttonFunctions={buttonFunctions} animationSpeed={animationSpeed}/>
       <DataContainer dataArray={dataArray}/>
     </div>
   );

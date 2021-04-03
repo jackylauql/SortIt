@@ -1,18 +1,14 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
-const NavigationButtons = ({ sorting, text, onClick }) => {
+const NavigationButtons = ({ sorting, animationSpeed, text, onClick }) => {
     return (
         <button disabled={sorting===true} onClick={onClick} style={{
-            backgroundColor:'red',
+            backgroundColor:(text === animationSpeed? 'green': 'red'),
             border:'1px solid black'
         }}>
-            {text}
+            {animationSpeed? text + 'x': text}
         </button>
     )
-}
-
-NavigationButtons.propTypes = {
-    text: PropTypes.string
 }
 
 export default NavigationButtons

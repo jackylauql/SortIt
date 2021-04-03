@@ -8,10 +8,10 @@ const DataContainer = ({ dataArray }) => {
     }
     return (
         <div style={{
-            display:'block',
-            height:'600px',
-            width:'800px',
-            backgroundColor: 'blue'
+            display:'flex',
+            alignItems: 'flex-end',
+            height:'700px',
+            width:'1200px',
         }}>
             {data}
         </div> 
