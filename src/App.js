@@ -17,6 +17,8 @@ function App() {
   }
 
   const [dataArray, setDataArray] = useState(generateRandomData(100))
+  const [animationSpeed, setAnimationSpeed] = useState(1)
+  const [sorting, setSorting] = useState(false)
 
   const buttonFunctions = {
     randomizeData: (amountOfData) => {
@@ -24,19 +26,43 @@ function App() {
       setDataArray(newData)
     },
 
-    bubbleSort: (currentPass) => {      
+    changeAnimationSpeed: (speed) => {
+      setAnimationSpeed(speed)
+    },
+
+    animation: (animationSpeed) => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve()
+        }, 20 / animationSpeed)
+      })
+    },
+
+    bubbleSort: async (currentPass) => {      
       let changes = false
-            
-      for (let i=0; i<dataArray.length-currentPass; i++) {
-        if (dataArray[i].value > dataArray[i+1].value) {
-            const lower_value = dataArray[i+1]
-            dataArray[i+1] = dataArray[i]
-            dataArray[i] = lower_value
+      setSorting(true)
+      const newData = dataArray
+      
+      for (let i=0; i<newData.length-currentPass; i++) {
+        newData[i].active = true
+        newData[i+1].active = true
+        await buttonFunctions.animation(animationSpeed)
+        console.log(animationSpeed)
+        if (newData[i].value > newData[i+1].value) {
+            const lower_value = newData[i+1]
+            newData[i+1] = newData[i]
+            newData[i] = lower_value
             changes = true
         }
+        setDataArray([...newData]) // a new instance is mapped so the component rerenders
+        newData[i].active = false
+        newData[i+1].active = false
       }
-      if (!changes) return console.log(dataArray)
-      setDataArray(dataArray)
+      
+      if (!changes) {
+        setSorting(false)
+        return setDataArray([...newData])
+      }
       buttonFunctions.bubbleSort(currentPass+1) 
     }
   }
@@ -45,7 +71,7 @@ function App() {
     <div className="container" style={{
       display: 'grid', placeItems: 'center'
     }}>
-      <NavigationBar buttonFunctions={buttonFunctions}/>
+      <NavigationBar sorting={sorting} buttonFunctions={buttonFunctions}/>
       <DataContainer dataArray={dataArray}/>
     </div>
   );

@@ -10,7 +10,7 @@ const Data = ({ dataObject }) => {
                 height: `${dataObject.value}px`,
                 width: `${dataObject.width}px`,
                 margin: '0 0.5px',
-                backgroundColor:'green'
+                backgroundColor: (dataObject.active? 'red' : 'green')
             }}>
                 
             </div>            

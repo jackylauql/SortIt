@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 
-const NavigationButtons = ({ text, onClick }) => {
+const NavigationButtons = ({ sorting, text, onClick }) => {
     return (
-        <button onClick={onClick} style={{
+        <button disabled={sorting===true} onClick={onClick} style={{
             backgroundColor:'red',
             border:'1px solid black'
         }}>
