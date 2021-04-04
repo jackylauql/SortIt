@@ -22,7 +22,7 @@ function App() {
   }
 
   // All States
-  const [dataArray, setDataArray] = useState(generateRandomData(50))
+  const [dataArray, setDataArray] = useState(generateRandomData(10))
   const [animationSpeed, setAnimationSpeed] = useState(1)
   const [sorting, setSorting] = useState(false)
 
@@ -104,27 +104,36 @@ function App() {
   
       buttonFunctions.quickSort(arrayToSort, left, lowerIndex)
       buttonFunctions.quickSort(arrayToSort, lowerIndex + 1, right)
-    }
+    },
 
-    // quickSort: async (arrayToSort, left, right) => {
-    //   if (arrayToSort.length === 1) return
-    //   setSorting(true)
+    mergeSort: () => {
+      const mergeArrays = (leftArray, rightArray) => {
+        const mergedArray = []
+    
+        while (leftArray.length && rightArray.length) {
+          if (leftArray[0].value < rightArray[0].value) {
+            mergedArray.push(leftArray.shift())
+          } else {
+            mergedArray.push(rightArray.shift())
+          }
+        }
+        
+        return [...mergedArray, ...leftArray, ...rightArray]
+      }
+    
+      const splitArray = (arrayToSplit) => {
+          if (arrayToSplit.length < 2) return arrayToSplit
       
-    //   const pivot = arrayToSort[arrayToSort.length - 1]
-    //   let lowerIndex = 0
-    //   for (let i = 0; i < arrayToSort.length; i ++) {
-    //     if (arrayToSort[i] < pivot) {
-    //       const temp = arrayToSort[i]
-    //       arrayToSort[i] = arrayToSort[lowerIndex]
-    //       arrayToSort[lowerIndex] = temp
-    //       lowerIndex += 1
-    //     }
-    //   }
-    //   arrayToSort[arrayToSort.length - 1] = arrayToSort[lowerIndex]
-    //   arrayToSort[lowerIndex] = pivot
-
-    //   quickSort()
-    // }
+          const half = Math.floor(arrayToSplit.length / 2)
+      
+          const halfArray = arrayToSplit.splice(0, half)
+          
+          return mergeArrays(splitArray(halfArray), splitArray(arrayToSplit))
+      }
+      
+      const sortedArray = splitArray(dataArray)
+      setDataArray(sortedArray)
+    }
   }
 
   return (
