@@ -30,6 +30,9 @@ const NavigationBar = ({ sorting, animationSpeed, buttonFunctions }) => {
             <span style={{margin:'0 20px'}} className='buttonColumn'>
                 <NavigationButtons sorting={sorting} text={'MergeSort'} onClick={() => buttonFunctions.mergeSort()}/>
             </span>
+            <span style={{margin:'0 20px'}} className='buttonColumn'>
+                <NavigationButtons sorting={sorting} text={'InsertionSort'} onClick={() => buttonFunctions.insertionSort()}/>
+            </span>
 
         </div>
     )

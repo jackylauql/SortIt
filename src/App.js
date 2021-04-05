@@ -167,6 +167,30 @@ function App() {
         setDataArray([...sortedArray])
       }
       
+    },
+
+    insertionSort: async () => {
+      
+      let oldArray = dataArray
+      for (let i = 1; i < oldArray.length; i ++) {
+        let index = i
+
+        const sortedArray = oldArray.slice(0, i)
+        const unsortedArray = oldArray.slice(i + 1)
+
+        while (index > 0 && oldArray[i].value < oldArray[index - 1].value) {
+            index -= 1
+        }
+        // console.log(index)
+        sortedArray.splice(index, 0, oldArray[i])
+
+        const newArray = [...sortedArray, ...unsortedArray]
+        oldArray = newArray
+        // console.log('old', oldArray)
+        // console.log(newArray)
+        setDataArray([...newArray])
+        await buttonFunctions.animation(animationSpeed)
+      }
     }
   }
 
