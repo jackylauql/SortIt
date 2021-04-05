@@ -16,6 +16,7 @@ const NavigationBar = ({ sorting, animationSpeed, buttonFunctions }) => {
             </span>
             <span style={{margin:'0 20px'}} className='buttonColumn'>
                 <NavigationButtons sorting={sorting} animationSpeed={animationSpeed} text={1} onClick={() => buttonFunctions.changeAnimationSpeed(1)}/>
+                <NavigationButtons sorting={sorting} animationSpeed={animationSpeed} text={2} onClick={() => buttonFunctions.changeAnimationSpeed(2)}/>
                 <NavigationButtons sorting={sorting} animationSpeed={animationSpeed} text={5} onClick={() => buttonFunctions.changeAnimationSpeed(5)}/>
                 <NavigationButtons sorting={sorting} animationSpeed={animationSpeed} text={10} onClick={() => buttonFunctions.changeAnimationSpeed(10)}/>
                 <NavigationButtons sorting={sorting} animationSpeed={animationSpeed} text={50} onClick={() => buttonFunctions.changeAnimationSpeed(50)}/>

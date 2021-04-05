@@ -32,11 +32,11 @@ function App() {
       setDataArray(newData)
     },
 
-    changeAnimationSpeed: (speed) => {
-      setAnimationSpeed(speed)
+    changeAnimationSpeed: (animationSpeed) => {
+      setAnimationSpeed(animationSpeed)
     },
 
-    animation: () => {
+    animation: (animationSpeed) => {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve()
@@ -53,7 +53,7 @@ function App() {
       for (let i = 0; i < newData.length - currentPass; i++) {
         newData[i].color = sortingColor
         newData[i+1].color = sortingColor
-        await buttonFunctions.animation()
+        await buttonFunctions.animation(animationSpeed)
         if (newData[i].value > newData[i+1].value) {
             const lower_value = newData[i+1]
             newData[i+1] = newData[i]
@@ -93,7 +93,7 @@ function App() {
           arrayToSort[lowerIndex] = temp
           lowerIndex += 1
         }
-        await buttonFunctions.animation()
+        await buttonFunctions.animation(animationSpeed)
         setDataArray([...arrayToSort])
         arrayToSort[i].color = unsortedColor
         if (lowerIndex !== left) arrayToSort[lowerIndex - 1].color = unsortedColor
@@ -111,7 +111,17 @@ function App() {
       const mergeArrays = async (leftArray, rightArray, arrayToLeft, arrayToRight) => {
         
         const mergedArray = []
+        
+        // Change color of data to sortingColor
+        for (let i = 0; i < leftArray.length; i ++) {
+          if (leftArray[i]) leftArray[i].color = sortingColor
+          if (rightArray[i]) rightArray[i].color = sortingColor
+          const animationArray = [...arrayToLeft, ...leftArray, ...rightArray, ...arrayToRight]
+          setDataArray([...animationArray])  
+          await buttonFunctions.animation(animationSpeed)
+        }
 
+        // Sort the 2 given arrays
         while (leftArray.length && rightArray.length) {
           if (leftArray[0].value < rightArray[0].value) {
             mergedArray.push(leftArray.shift())
@@ -119,17 +129,26 @@ function App() {
             mergedArray.push(rightArray.shift())
           }
         }
-        await buttonFunctions.animation()
-        setDataArray([...arrayToLeft, ...mergedArray, ...leftArray, ...rightArray, ...arrayToRight])
+        
+        // Merge the sorted array with what is leftover from left/right array(...leftArray, ...rightArray)
+        // and the original array(...arrayToLeft, ...arrayToRight)
+        const newArray = [...arrayToLeft, ...mergedArray, ...leftArray, ...rightArray, ...arrayToRight]
+        for (let i = 0; i < newArray.length; i ++) {
+          newArray[i].color = unsortedColor
+        }
+        await buttonFunctions.animation(animationSpeed)
+        setDataArray(newArray)
+        
         return [...mergedArray, ...leftArray, ...rightArray]
       }
     
       const splitArray = async (arrayToSplit, arrayToLeft, arrayToRight) => {
           
-          if (arrayToSplit.length < 2) return arrayToSplit
+          if (arrayToSplit.length < 2) {
+            return arrayToSplit
+          }
       
-          const half = Math.floor(arrayToSplit.length / 2)
-      
+          const half = Math.ceil(arrayToSplit.length / 2)
           const halfArray = arrayToSplit.splice(0, half)
 
           const leftArray = await splitArray(halfArray, arrayToLeft, [...arrayToSplit, ...arrayToRight])
@@ -140,8 +159,14 @@ function App() {
       }
       
       const unsortedArray = [...dataArray]
-      await splitArray(unsortedArray, [], [])
-      // setDataArray(sortedArray)
+      const sortedArray = await splitArray(unsortedArray, [], [])
+      
+      for (let i = 0; i < sortedArray.length; i ++) {
+        await buttonFunctions.animation(animationSpeed * 30)
+        sortedArray[i].color = sortedColor
+        setDataArray([...sortedArray])
+      }
+      
     }
   }
 
