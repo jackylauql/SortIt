@@ -106,10 +106,12 @@ function App() {
       buttonFunctions.quickSort(arrayToSort, lowerIndex + 1, right)
     },
 
-    mergeSort: () => {
-      const mergeArrays = (leftArray, rightArray) => {
+    mergeSort: async () => {
+
+      const mergeArrays = async (leftArray, rightArray, arrayToLeft, arrayToRight) => {
+        
         const mergedArray = []
-    
+
         while (leftArray.length && rightArray.length) {
           if (leftArray[0].value < rightArray[0].value) {
             mergedArray.push(leftArray.shift())
@@ -117,22 +119,29 @@ function App() {
             mergedArray.push(rightArray.shift())
           }
         }
-        
+        await buttonFunctions.animation()
+        setDataArray([...arrayToLeft, ...mergedArray, ...leftArray, ...rightArray, ...arrayToRight])
         return [...mergedArray, ...leftArray, ...rightArray]
       }
     
-      const splitArray = (arrayToSplit) => {
+      const splitArray = async (arrayToSplit, arrayToLeft, arrayToRight) => {
+          
           if (arrayToSplit.length < 2) return arrayToSplit
       
           const half = Math.floor(arrayToSplit.length / 2)
       
           const halfArray = arrayToSplit.splice(0, half)
+
+          const leftArray = await splitArray(halfArray, arrayToLeft, [...arrayToSplit, ...arrayToRight])
+          const rightArray = await splitArray(arrayToSplit, [...arrayToLeft, ...leftArray], arrayToRight)          
           
-          return mergeArrays(splitArray(halfArray), splitArray(arrayToSplit))
+          const mergedArray = await mergeArrays(leftArray, rightArray, arrayToLeft, arrayToRight)
+          return mergedArray
       }
       
-      const sortedArray = splitArray(dataArray)
-      setDataArray(sortedArray)
+      const unsortedArray = [...dataArray]
+      await splitArray(unsortedArray, [], [])
+      // setDataArray(sortedArray)
     }
   }
 

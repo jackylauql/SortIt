@@ -9,7 +9,7 @@ const NavigationBar = ({ sorting, animationSpeed, buttonFunctions }) => {
             width:'100%'
         }}>
             <span style={{margin:'0 20px'}} className='buttonColumn'>
-                <NavigationButtons sorting={sorting} text={'50'} onClick={() => buttonFunctions.randomizeData(10)}/>
+                <NavigationButtons sorting={sorting} text={'10'} onClick={() => buttonFunctions.randomizeData(10)}/>
                 <NavigationButtons sorting={sorting} text={'50'} onClick={() => buttonFunctions.randomizeData(50)}/>
                 <NavigationButtons sorting={sorting} text={'100'} onClick={() => buttonFunctions.randomizeData(100)}/>
                 <NavigationButtons sorting={sorting} text={'200'} onClick={() => buttonFunctions.randomizeData(200)}/>
