@@ -162,9 +162,9 @@ function App() {
       const sortedArray = await splitArray(unsortedArray, [], [])
       
       for (let i = 0; i < sortedArray.length; i ++) {
-        await buttonFunctions.animation(animationSpeed * 30)
         sortedArray[i].color = sortedColor
         setDataArray([...sortedArray])
+        await buttonFunctions.animation(animationSpeed * 30)
       }
       
     },
@@ -174,6 +174,9 @@ function App() {
       let oldArray = dataArray
       for (let i = 1; i < oldArray.length; i ++) {
         let index = i
+        oldArray[i].color = sortingColor
+        setDataArray([...oldArray])
+        await buttonFunctions.animation(animationSpeed)
 
         const sortedArray = oldArray.slice(0, i)
         const unsortedArray = oldArray.slice(i + 1)
@@ -181,15 +184,21 @@ function App() {
         while (index > 0 && oldArray[i].value < oldArray[index - 1].value) {
             index -= 1
         }
-        // console.log(index)
+
         sortedArray.splice(index, 0, oldArray[i])
 
         const newArray = [...sortedArray, ...unsortedArray]
-        oldArray = newArray
-        // console.log('old', oldArray)
-        // console.log(newArray)
+
         setDataArray([...newArray])
         await buttonFunctions.animation(animationSpeed)
+        newArray[index].color = unsortedColor
+        oldArray = newArray
+      }
+
+      for (let i = 0; i < oldArray.length; i ++) {
+        oldArray[i].color = sortedColor
+        setDataArray([...oldArray])
+        await buttonFunctions.animation(animationSpeed * 30)
       }
     }
   }
