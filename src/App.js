@@ -4,8 +4,26 @@ import NavigationBar from './components/NavigationBar';
 
 function App() {
   // Initialization Variables
-  const [sortedColor, sortingColor, unsortedColor, quickSortPivotColor] = 
-  ['#1509eb', '#e01f1f', '#18baf0', '#f0c818'] // Dark Blue, Red, Light Blue 
+  const [
+    sortedColor, 
+    sortingColor, 
+    unsortedColor, 
+    quickSortPivotColor, 
+    treeColor] = 
+  [
+    '#1509eb', // Dark Blue
+    '#e01f1f', // Red 
+    '#18baf0', // Light Blue 
+    '#f0c818', // Orange
+    ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'black', 'black']] 
+
+
+  const resetColor = () => {
+    for (let i = 0; i < dataArray.length; i ++) {
+      dataArray[i].color = unsortedColor
+    }
+    setDataArray([...dataArray])
+  }
 
   const generateRandomData = (amountOfData) => {
     const dataArray = []
@@ -46,6 +64,7 @@ function App() {
 
     // Sorting Functions
     bubbleSort: async (currentPass) => {      
+      resetColor()
       let changes = false
       setSorting(true)
       const newData = dataArray
@@ -107,7 +126,7 @@ function App() {
     },
 
     mergeSort: async () => {
-
+      resetColor()
       const mergeArrays = async (leftArray, rightArray, arrayToLeft, arrayToRight) => {
         
         const mergedArray = []
@@ -170,7 +189,7 @@ function App() {
     },
 
     insertionSort: async () => {
-      
+      resetColor()
       let oldArray = dataArray
       for (let i = 1; i < oldArray.length; i ++) {
         let index = i
@@ -203,7 +222,7 @@ function App() {
     },
 
     heapSort : async () => {
-
+      resetColor()
       const sortedArray = []
   
       const getParentIndex = (childIndex) => {
@@ -248,8 +267,24 @@ function App() {
               }
           }
       }
+
+      const colorHeap = async (arrayToColor) => {
+        let index = 0
+        let level = 0
+        let items = 1
+        while (index < arrayToColor.length) {
+          for (let i = 0; i < items && index < arrayToColor.length; i ++) {
+            arrayToColor[index].color = treeColor[level]
+            index += 1
+            setDataArray([...arrayToColor])
+            await buttonFunctions.animation(animationSpeed)
+          }
+          items *= 2
+          level += 1
+        }
+      }
   
-      const heapifySort = () => {
+      const heapifySort = async () => {
           if (!dataArray.length) return
           
           heapifyDown(0)
@@ -258,6 +293,9 @@ function App() {
           dataArray[0] = dataArray[dataArray.length - 1]
           dataArray[dataArray.length - 1] = temp
           sortedArray.splice(0, 0, dataArray.pop())
+          sortedArray[0].color = sortedColor
+          setDataArray([...dataArray, ...sortedArray])
+          await buttonFunctions.animation(animationSpeed)
           heapifySort()
       }
   
@@ -291,12 +329,18 @@ function App() {
               heapifyUp(i)
             }
           }
+          setDataArray([...dataArray])
+          await buttonFunctions.animation(animationSpeed)
       }
   
       [dataArray[0], dataArray[dataArray.length - 1]] = [dataArray[dataArray.length - 1], dataArray[0]]
       sortedArray.splice(0, 0, dataArray.pop())
+      await colorHeap(dataArray)
+      sortedArray[0].color = sortedColor
+      setDataArray([...dataArray, ...sortedArray])
+      await buttonFunctions.animation(animationSpeed)
       heapifySort()
-      setDataArray(sortedArray)
+      // setDataArray(sortedArray)
     }
   }
 
