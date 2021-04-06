@@ -200,6 +200,103 @@ function App() {
         setDataArray([...oldArray])
         await buttonFunctions.animation(animationSpeed * 30)
       }
+    },
+
+    heapSort : async () => {
+
+      const sortedArray = []
+  
+      const getParentIndex = (childIndex) => {
+          return Math.floor((childIndex - 1) / 2)
+      }
+  
+      const heapifyUp = (childIndex) => {
+          if (childIndex === 0) return
+          const parentIndex = (childIndex <= 2? 0 : getParentIndex(childIndex))
+          if (dataArray[childIndex].value > dataArray[parentIndex].value) {
+              const parentValue = dataArray[parentIndex]
+              dataArray[parentIndex] = dataArray[childIndex]
+              dataArray[childIndex] = parentValue
+              heapifyUp(parentIndex)
+          }
+      }
+  
+      const heapifyDown = (index) => {
+          const leftChildIndex = (index * 2) + 1
+          const rightChildIndex = (index * 2) + 2
+  
+          if (!dataArray[leftChildIndex] && !dataArray[rightChildIndex]) return
+          if (dataArray[leftChildIndex] && dataArray[rightChildIndex]) {
+            if (dataArray[index].value < dataArray[leftChildIndex].value || dataArray[index].value < dataArray[rightChildIndex].value) {
+              if (dataArray[leftChildIndex].value > dataArray[rightChildIndex].value) {
+                  [dataArray[index], dataArray[leftChildIndex]] = [dataArray[leftChildIndex], dataArray[index]]
+                  heapifyDown(leftChildIndex)
+              } else {
+                  [dataArray[index], dataArray[rightChildIndex]] = [dataArray[rightChildIndex], dataArray[index]]
+                  heapifyDown(rightChildIndex)
+              }
+            }
+          } else if (dataArray[leftChildIndex]) {
+              if ((dataArray[index].value < dataArray[leftChildIndex].value)) {
+                [dataArray[index], dataArray[leftChildIndex]] = [dataArray[leftChildIndex], dataArray[index]]
+                heapifyDown(leftChildIndex)
+              } 
+          } else {
+              if ((dataArray[index].value < dataArray[rightChildIndex].value)) {
+                [dataArray[index], dataArray[rightChildIndex]] = [dataArray[rightChildIndex], dataArray[index]]
+                heapifyDown(rightChildIndex)
+              }
+          }
+      }
+  
+      const heapifySort = () => {
+          if (!dataArray.length) return
+          
+          heapifyDown(0)
+          
+          const temp = dataArray[0]
+          dataArray[0] = dataArray[dataArray.length - 1]
+          dataArray[dataArray.length - 1] = temp
+          sortedArray.splice(0, 0, dataArray.pop())
+          heapifySort()
+      }
+  
+  
+      for (let i = 0; i < dataArray.length; i++) {
+          const leftChildIndex = (i * 2) + 1
+          const rightChildIndex = (i * 2) + 2
+  
+          if (!dataArray[leftChildIndex] && !dataArray[rightChildIndex]) continue
+        
+          if (dataArray[leftChildIndex] && dataArray[rightChildIndex]) {
+            if (dataArray[i].value < dataArray[leftChildIndex].value || dataArray[i].value < dataArray[rightChildIndex].value) {
+              if (dataArray[leftChildIndex].value < dataArray[rightChildIndex].value) {
+                  [dataArray[i], dataArray[rightChildIndex]] = [dataArray[rightChildIndex], dataArray[i]]
+                  heapifyUp(i)
+                  heapifyUp(leftChildIndex)
+              } else {
+                  [dataArray[i], dataArray[leftChildIndex]] = [dataArray[leftChildIndex], dataArray[i]]
+                  heapifyUp(i)
+                  heapifyUp(rightChildIndex)
+              }
+            }
+          } else if (dataArray[leftChildIndex]) {
+            if (dataArray[i].value < dataArray[leftChildIndex].value) {
+              [dataArray[i], dataArray[leftChildIndex]] = [dataArray[leftChildIndex], dataArray[i]]
+              heapifyUp(i)
+            }
+          } else {
+            if (dataArray[i].value < dataArray[rightChildIndex].value) {
+              [dataArray[i], dataArray[rightChildIndex]] = [dataArray[rightChildIndex], dataArray[i]]
+              heapifyUp(i)
+            }
+          }
+      }
+  
+      [dataArray[0], dataArray[dataArray.length - 1]] = [dataArray[dataArray.length - 1], dataArray[0]]
+      sortedArray.splice(0, 0, dataArray.pop())
+      heapifySort()
+      setDataArray(sortedArray)
     }
   }
 

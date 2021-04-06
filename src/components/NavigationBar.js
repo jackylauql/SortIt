@@ -33,6 +33,9 @@ const NavigationBar = ({ sorting, animationSpeed, buttonFunctions }) => {
             <span style={{margin:'0 20px'}} className='buttonColumn'>
                 <NavigationButtons sorting={sorting} text={'InsertionSort'} onClick={() => buttonFunctions.insertionSort()}/>
             </span>
+            <span style={{margin:'0 20px'}} className='buttonColumn'>
+                <NavigationButtons sorting={sorting} text={'HeapSort'} onClick={() => buttonFunctions.heapSort()}/>
+            </span>
 
         </div>
     )
