@@ -11,11 +11,11 @@ function App() {
     quickSortPivotColor, 
     treeColor] = 
   [
-    '#1509eb', // Dark Blue
-    '#e01f1f', // Red 
-    '#18baf0', // Light Blue 
-    '#f0c818', // Orange
-    ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'black', 'black']] 
+    '#173F5F', // Dark Blue
+    '#3CAEA3', // Red 
+    '#20639B', // Light Blue 
+    '#ED553B', // Orange
+    ['#91E3F7', '#4ED2F2', '#10BFE9', '#0B88A6', '#096D85', '#075264', '#043642', '#01171a', '#043642', 'black']] 
 
 
   const resetColor = () => {
@@ -63,8 +63,7 @@ function App() {
     },
 
     // Sorting Functions
-    bubbleSort: async (currentPass) => {      
-      resetColor()
+    bubbleSort: async (currentPass=1) => {      
       let changes = false
       setSorting(true)
       const newData = dataArray
@@ -96,6 +95,7 @@ function App() {
     },
 
     quickSort: async (arrayToSort=dataArray, left = 0, right = arrayToSort.length) => {
+      setSorting(true)
       if (left === right) {
         return setDataArray([...dataArray])
       }
@@ -121,11 +121,14 @@ function App() {
       arrayToSort[lowerIndex] = pivot
       arrayToSort[lowerIndex].color = sortedColor
   
-      buttonFunctions.quickSort(arrayToSort, left, lowerIndex)
-      buttonFunctions.quickSort(arrayToSort, lowerIndex + 1, right)
+      await buttonFunctions.quickSort(arrayToSort, left, lowerIndex)
+      await buttonFunctions.quickSort(arrayToSort, lowerIndex + 1, right)
+
+      setSorting(false)
     },
 
     mergeSort: async () => {
+      setSorting(true)
       resetColor()
       const mergeArrays = async (leftArray, rightArray, arrayToLeft, arrayToRight) => {
         
@@ -157,7 +160,6 @@ function App() {
         }
         await buttonFunctions.animation(animationSpeed)
         setDataArray(newArray)
-        
         return [...mergedArray, ...leftArray, ...rightArray]
       }
     
@@ -185,10 +187,12 @@ function App() {
         setDataArray([...sortedArray])
         await buttonFunctions.animation(animationSpeed * 30)
       }
+      setSorting(false)
       
     },
 
     insertionSort: async () => {
+      setSorting(true)
       resetColor()
       let oldArray = dataArray
       for (let i = 1; i < oldArray.length; i ++) {
@@ -219,9 +223,12 @@ function App() {
         setDataArray([...oldArray])
         await buttonFunctions.animation(animationSpeed * 30)
       }
+
+      setSorting(false)
     },
 
     heapSort : async () => {
+      setSorting(true)
       resetColor()
       const sortedArray = []
   
@@ -296,7 +303,7 @@ function App() {
           sortedArray[0].color = sortedColor
           setDataArray([...dataArray, ...sortedArray])
           await buttonFunctions.animation(animationSpeed)
-          heapifySort()
+          await heapifySort()
       }
   
   
@@ -339,8 +346,8 @@ function App() {
       sortedArray[0].color = sortedColor
       setDataArray([...dataArray, ...sortedArray])
       await buttonFunctions.animation(animationSpeed)
-      heapifySort()
-      // setDataArray(sortedArray)
+      await heapifySort()
+      setSorting(false)
     }
   }
 
