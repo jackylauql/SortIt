@@ -11,12 +11,11 @@ function App() {
     quickSortPivotColor, 
     treeColor] = 
   [
-    '#173F5F', // Dark Blue
-    '#3CAEA3', // Red 
-    '#20639B', // Light Blue 
-    '#ED553B', // Orange
-    ['#91E3F7', '#4ED2F2', '#10BFE9', '#0B88A6', '#096D85', '#075264', '#043642', '#01171a', '#043642', 'black']] 
-
+    '#173F5F', // sortedColor
+    '#3CAEA3', // sortingColor
+    '#20639B', // unsortedColor
+    '#ED553B', // quickSortPivotColor
+    ['#91E3F7', '#4ED2F2', '#10BFE9', '#0B88A6', '#096D85', '#075264', '#043642', '#01171a']] 
 
   const resetColor = () => {
     for (let i = 0; i < dataArray.length; i ++) {
@@ -119,7 +118,11 @@ function App() {
       }
       arrayToSort[right - 1] = arrayToSort[lowerIndex]
       arrayToSort[lowerIndex] = pivot
-      arrayToSort[lowerIndex].color = sortedColor
+      let colorLowerIndex = lowerIndex
+      while (arrayToSort[colorLowerIndex] && arrayToSort[colorLowerIndex].value === arrayToSort[lowerIndex].value) {
+        arrayToSort[colorLowerIndex].color = sortedColor
+        colorLowerIndex += 1
+      }
   
       await buttonFunctions.quickSort(arrayToSort, left, lowerIndex)
       await buttonFunctions.quickSort(arrayToSort, lowerIndex + 1, right)
@@ -275,7 +278,7 @@ function App() {
           }
       }
 
-      const colorHeap = async (arrayToColor) => {
+      const colorHeap = async (arrayToColor, sortedArray) => {
         let index = 0
         let level = 0
         let items = 1
@@ -283,7 +286,7 @@ function App() {
           for (let i = 0; i < items && index < arrayToColor.length; i ++) {
             arrayToColor[index].color = treeColor[level]
             index += 1
-            setDataArray([...arrayToColor])
+            setDataArray([...arrayToColor, ...sortedArray])
             await buttonFunctions.animation(animationSpeed)
           }
           items *= 2
@@ -342,7 +345,7 @@ function App() {
   
       [dataArray[0], dataArray[dataArray.length - 1]] = [dataArray[dataArray.length - 1], dataArray[0]]
       sortedArray.splice(0, 0, dataArray.pop())
-      await colorHeap(dataArray)
+      await colorHeap(dataArray, sortedArray)
       sortedArray[0].color = sortedColor
       setDataArray([...dataArray, ...sortedArray])
       await buttonFunctions.animation(animationSpeed)
