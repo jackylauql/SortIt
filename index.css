@@ -1,0 +1,24 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    font-family: 'Montserrat';
+    font-size: inherit;
+    text-decoration: inherit;
+    z-index: inherit;
+    background-color: rgb(233, 233, 233);
+}
+
+button:hover {
+    filter: brightness(130%);
+    cursor: pointer;
+}
+
+button:focus {
+    outline: 0px;
+}
+
+button:disabled {
+    cursor: default;
+    filter: brightness(100%);
+}
