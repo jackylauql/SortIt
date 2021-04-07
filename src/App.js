@@ -40,7 +40,7 @@ function App() {
 
   // All States
   const [dataArray, setDataArray] = useState(generateRandomData(10))
-  const [animationSpeed, setAnimationSpeed] = useState(1)
+  const [animationSpeed, setAnimationSpeed] = useState(5)
   const [sorting, setSorting] = useState(false)
 
   const buttonFunctions = {
@@ -188,7 +188,7 @@ function App() {
       for (let i = 0; i < sortedArray.length; i ++) {
         sortedArray[i].color = sortedColor
         setDataArray([...sortedArray])
-        await buttonFunctions.animation(animationSpeed * 30)
+        await buttonFunctions.animation(animationSpeed * 5)
       }
       setSorting(false)
       
@@ -224,7 +224,7 @@ function App() {
       for (let i = 0; i < oldArray.length; i ++) {
         oldArray[i].color = sortedColor
         setDataArray([...oldArray])
-        await buttonFunctions.animation(animationSpeed * 30)
+        await buttonFunctions.animation(animationSpeed * 5)
       }
 
       setSorting(false)

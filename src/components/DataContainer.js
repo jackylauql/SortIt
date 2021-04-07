@@ -10,7 +10,7 @@ const DataContainer = ({ dataArray }) => {
         <div style={{
             display:'flex',
             alignItems: 'flex-end',
-            height:'700px',
+            height:'650px',
             width:'1200px',
         }}>
             {data}
